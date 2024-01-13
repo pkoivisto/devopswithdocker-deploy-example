@@ -1,0 +1,21 @@
+name: Deploy to fly.io
+
+# Run workflow on push to main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-fly-io:
+    name: Deploy app on Fly.io
+    runs-on: ubuntu-latest
+    steps:
+    # Get access to repository
+    - uses: actions/checkout@v4
+    # Setup flyctl
+    - uses: superfly/flyctl-actions/setup-flyctl@master
+    # Deploy app
+    - run: flyctl deploy --remote-only
+      env:
+        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
